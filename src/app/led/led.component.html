@@ -2,6 +2,10 @@
 
 <h3>Index: {{ led.index + 1 }}</h3>
 
-<div class="box" [style.backgroundColor]="led.color">
+<div (click)="handleColorClick($event)" class="box" [style.backgroundColor]="led.color">
 
 </div>
+
+<p>
+    {{ led.color | piColor }}
+</p>

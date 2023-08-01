@@ -1,7 +1,7 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { Leds } from '../model/led';
 import { LedService } from '../shared/led.service';
-import { tap } from 'rxjs';
+import { Subscription, tap, timer } from 'rxjs';
 
 /**
  * Stateful Component
@@ -11,12 +11,18 @@ import { tap } from 'rxjs';
   templateUrl: './led-list.component.html',
   styleUrls: ['./led-list.component.scss'],
 })
-export class LedListComponent implements OnInit {
+export class LedListComponent implements OnInit, OnDestroy {
   #service = inject(LedService);
+
+  #sub?: Subscription;
 
   leds?: Leds;
 
+  ticker$ = timer(3_000, 5_000).pipe(tap((x) => console.log(x)));
+
   ngOnInit(): void {
+    // this.#sub = this.ticker$.pipe(tap((x) => console.log(x))).subscribe();
+
     this.#service
       .readLeds()
       .pipe(tap((x) => console.log(x)))
@@ -24,5 +30,15 @@ export class LedListComponent implements OnInit {
         // effect
         this.leds = value;
       });
+  }
+
+  setRandomColor(index: number): void {
+    // effect
+    this.leds![index].color = 'magenta';
+  }
+
+  ngOnDestroy(): void {
+    // effect
+    // this.#sub?.unsubscribe();
   }
 }
