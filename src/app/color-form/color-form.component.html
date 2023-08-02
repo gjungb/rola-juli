@@ -1,0 +1,6 @@
+<p>color-form works!</p>
+
+<form [formGroup]="form" (ngSubmit)="updateColor(form.value)">
+  <input type="text" formControlName="color" />
+  <button type="submit" [disabled]="form.invalid">Abschicken</button>
+</form>

@@ -1,13 +1,30 @@
 <p>led-list works!</p>
 
-<h3>Ticker: {{ ticker$ | async }}</h3>
+<h3 *ngIf="false">Ticker: {{ ticker$ | async }}</h3>
 
 <table>
   <tr>
-    <td *ngFor="let thing of leds | slice:0:8">
+    <td *ngFor="let thing of leds | slice : 0 : 8">
+      <p>
+        <a [routerLink]="[thing.index + 5]">Details</a>
+      </p>
+      <button (click)="setRandomColor(thing.index)">
+        Set {{ thing.index }}
+      </button>
       <pi-led [led]="thing" (colorChange)="setRandomColor($event)"></pi-led>
     </td>
   </tr>
 </table>
 
 <pre><code>{{ leds | slice:0:8 | json }}</code></pre>
+
+<ng-container *ngIf="leds$ | async as things">
+  <table>
+    <tr>
+      <td *ngFor="let thing of things">
+        <pi-led [led]="thing"></pi-led>
+      </td>
+    </tr>
+  </table>
+</ng-container>
+

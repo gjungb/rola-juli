@@ -18,6 +18,8 @@ export class LedListComponent implements OnInit, OnDestroy {
 
   leds?: Leds;
 
+  leds$ = this.#service.leds$;
+
   ticker$ = timer(3_000, 5_000).pipe(tap((x) => console.log(x)));
 
   ngOnInit(): void {
@@ -34,7 +36,17 @@ export class LedListComponent implements OnInit, OnDestroy {
 
   setRandomColor(index: number): void {
     // effect
-    this.leds![index].color = 'magenta';
+    // this.leds![index].color = 'magenta';
+    // this.leds![index] = {
+    //   index,
+    //   color: 'magenta',
+    // };
+    /* @ts-ignore */
+    this.leds = this.leds?.with(index, { index, color: 'magenta' });
+  }
+
+  reloadLeds(): void {
+    console.log('reload');
   }
 
   ngOnDestroy(): void {
